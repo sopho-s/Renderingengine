@@ -1,0 +1,1 @@
+add_library(Tester Tester.cpp Tester.h)

@@ -1,0 +1,12 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "Renderingengine.exe (Renderingengine\\Renderingengine.exe)",
+      "name": "Renderingengine.exe (Renderingengine\\Renderingengine.exe)"
+    }
+  ]
+}

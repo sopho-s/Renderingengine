@@ -1,0 +1,11 @@
+C:/Users/nick/source/repos/Renderingengine/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/nick/source/repos/Renderingengine/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/nick/source/repos/Renderingengine/build/Renderingengine/CMakeFiles/Renderingengine.dir
+C:/Users/nick/source/repos/Renderingengine/build/Renderingengine/CMakeFiles/ALL_BUILD.dir
+C:/Users/nick/source/repos/Renderingengine/build/Renderingengine/Includes/thrust/CMakeFiles/ALL_BUILD.dir
+C:/Users/nick/source/repos/Renderingengine/build/Renderingengine/Maths/CMakeFiles/AMaths.dir
+C:/Users/nick/source/repos/Renderingengine/build/Renderingengine/Maths/CMakeFiles/GMaths.dir
+C:/Users/nick/source/repos/Renderingengine/build/Renderingengine/Camera/CMakeFiles/Camera.dir
+C:/Users/nick/source/repos/Renderingengine/build/Tests/CMakeFiles/Tests.dir
+C:/Users/nick/source/repos/Renderingengine/build/Tests/CMakeFiles/ALL_BUILD.dir
+C:/Users/nick/source/repos/Renderingengine/build/Tests/Tester/CMakeFiles/Tester.dir

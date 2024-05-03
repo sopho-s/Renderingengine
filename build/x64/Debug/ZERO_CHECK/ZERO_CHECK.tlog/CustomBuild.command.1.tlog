@@ -1,0 +1,10 @@
+^C:\USERS\NICK\SOURCE\REPOS\RENDERINGENGINE\BUILD\CMAKEFILES\6BF9E2B5AEDFCDBCC4C50A7A2CBE6911\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/nick/source/repos/Renderingengine -BC:/Users/nick/source/repos/Renderingengine/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/nick/source/repos/Renderingengine/build/Renderingengine.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

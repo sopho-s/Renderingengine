@@ -1,0 +1,1 @@
+.\build\Tests\Release\Tests

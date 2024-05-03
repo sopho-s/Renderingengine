@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CudaCompile Include="..\..\..\Renderingengine\Maths\AMaths.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\nick\source\repos\Renderingengine\Renderingengine\Maths\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\nick\source\repos\Renderingengine\Renderingengine\Maths\AMaths.cuh" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{6A697619-6693-3C38-AB62-7A3ABB2EEF72}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
