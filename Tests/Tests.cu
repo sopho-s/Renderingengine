@@ -105,30 +105,39 @@ void Rotation() {
 }
 void VecAddCPU() {
 	srand (time(NULL));
+	// initalises arrays
 	float vector1[131072];
 	float vector2[131072];
+	float out[131072];
+	// gives random numbers to arrays
 	for (int i = 0; i < 131072; i++) {
 		vector1[i] = rand() / RAND_MAX;
 		vector2[i] = rand() / RAND_MAX;
 	}
-	float out[131072];
+	// calls function
 	AMaths::VecAdd(vector1, vector2, 131072, out);
 }
 
 void VecAddGPU() {
 	int N = 1<<17;
 	srand (time(NULL));
+	// creates uninitialised pointers
 	float *gpuvector1, *gpuvector2, *gpuout;
+	// gives memory to the pointers
 	cudaMallocManaged(&gpuvector1, sizeof(float) * 131072);
 	cudaMallocManaged(&gpuvector2, sizeof(float) * 131072);
+	cudaMallocManaged(&gpuout, sizeof(float) * 131072);
+	// assigns random numbers to both
 	for (int i = 0; i < N; i++) {
 		gpuvector1[i] = rand() / RAND_MAX;
 		gpuvector2[i] = rand() / RAND_MAX;
 	}
-	cudaMallocManaged(&gpuout, sizeof(float) * 131072);
+	// calculates blocks and block sizes
 	int blockSize = 256;
 	int numBlocks = (N + blockSize - 1) / blockSize;
+	// calls function
 	GMaths::VecAdd <<< numBlocks, blockSize >>> (gpuvector1, gpuvector2, gpuout);
+	// frees memory 
 	cudaFree(gpuvector1);
 	cudaFree(gpuvector2);
 	cudaFree(gpuout);

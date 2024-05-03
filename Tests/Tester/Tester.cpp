@@ -93,8 +93,10 @@ namespace Tester {
         int count = 0;
         std::chrono::steady_clock::time_point teststart;
         std::chrono::steady_clock::time_point testend;
+        // runs each test
         for(std::function<void()> currenttest : tests) {
             bool pass = true;
+            // TODO: enum
             switch(TestType[count]) {
             case 0:
                 teststart = std::chrono::high_resolution_clock::now();
@@ -141,15 +143,19 @@ namespace Tester {
         int testnum = 1;
         int currentgroup = 0;
         for(bool result : results) {
+            // checks if a new group has been started
             if (currentgroup != TestGroup[testnum-1]) {
                 currentgroup = TestGroup[testnum-1];
                 std::cout << "\nTESTS FOR: " << GroupNames[currentgroup-1] << std::endl;
             }
+            // adds colour
             if (result) {
                 std::cout << "\033[1;32m";
             } else {
                 std::cout << "\033[1;31m";
             }
+            // prints different text depending on the test type
+            // TODO: enum
             switch (TestType[testnum-1]) {
             case 0:
                 if (result) {
@@ -180,6 +186,7 @@ namespace Tester {
                 std::cout << " ON AVERAGE";
                 break;
             }
+            // prints the duration of the test in an appropriate format
             auto dur = std::chrono::duration_cast<std::chrono::nanoseconds>(times[testnum-1]);
             long long timecount = dur.count();
             if (timecount < 1000) {
@@ -193,6 +200,7 @@ namespace Tester {
             }
             testnum++;
         }
+        // prints the final duration of the tests in an appropriate format
         std::cout << "\n\nTESTS PASSED: " << passedtests << "\\" << testnum-1 << std::endl;
         auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
         long long finalcount = duration.count();
@@ -212,7 +220,9 @@ namespace Tester {
         std::chrono::steady_clock::time_point teststart;
         std::chrono::steady_clock::time_point testend;
         int count = 0;
+        // perform each test and records it's time
         for(std::function<void()> currenttest : tests) {
+            // TODO: enum
             switch(TestType[count]) {
             case 0:
                 teststart = std::chrono::high_resolution_clock::now();
@@ -237,10 +247,12 @@ namespace Tester {
         int testnum = 1;
         int currentgroup = 0;
         for(std::function<void()>  currenttest : tests) {
+            // checks if a new group has been started
             if (currentgroup != TestGroup[testnum-1]) {
                 currentgroup = TestGroup[testnum-1];
                 std::cout << "\nTESTS FOR: " << GroupNames[currentgroup-1] << std::endl;
             }
+            // colours text
             if (testnum > 1) {
                 if (times[testnum-2] > times[testnum-1]) {
                     std::cout << "\033[1;32m";
@@ -248,6 +260,8 @@ namespace Tester {
                     std::cout << "\033[1;31m";
                 }
             }
+            // prints different text depending on the test type
+            // TODO: enum
             switch (TestType[testnum-1]) {
             case 0:
                 std::cout << "TEST " << testnum;
@@ -263,6 +277,7 @@ namespace Tester {
                 std::cout << " ON AVERAGE";
                 break;
             }
+            // finds the speed change
             float increase = 0;
             auto dur = std::chrono::duration_cast<std::chrono::nanoseconds>(times[testnum-1]);
             long long timecount = dur.count();
@@ -274,6 +289,7 @@ namespace Tester {
                     increase = increase - 1;
                 }
             }
+            // prints the test duration in an appropriate format
             if (timecount < 1000) {
                 std::cout << " TEST TOOK: " << timecount << " NANOSECONDS";
             } else if (timecount < 1000000) {
@@ -283,11 +299,13 @@ namespace Tester {
                 timecount = (long long)(timecount / 1000000);
                 std::cout << " TEST TOOK: " << timecount << " MILLISECONDS";
             }
+            // prints the speed change
             std::cout << ". THIS IS " << increase << "x FASTER\033[0m" << std::endl;
             testnum++;
         }
         auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
         long long finalcount = duration.count();
+        // prints the final duration in an appropriate format
         if (finalcount < 1000) {
             std::cout << "TESTS LASTED: " << finalcount << " NANOSECONDS\033[0m" << std::endl;
         } else if (finalcount < 1000000) {
