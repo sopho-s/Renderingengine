@@ -11,8 +11,6 @@ include_directories(Maths Camera)
 
 add_executable (Renderingengine Renderingengine.cpp Renderingengine.h)
 
-add_subdirectory(Includes)
-
 add_subdirectory(Maths)
 
 target_link_libraries(Renderingengine
