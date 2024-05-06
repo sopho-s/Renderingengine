@@ -51,7 +51,8 @@ jobs:
     - name: Install CUDA
       env:
         cuda: ${{ matrix.cuda }}
-      run: ./scripts/actions/install_cuda_ubuntu.sh
+      run: |
+        bash ./scripts/actions/install_cuda_ubuntu.sh
       shell: bash
     
     - name: Install/Select gcc and g++ 
