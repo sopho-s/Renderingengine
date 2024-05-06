@@ -5,9 +5,7 @@ namespace GPUInterface {
         int stack[500];
         int startpointer, endpointer;
     public:
-        Caller() {
-
-        }
+        Caller();
         Caller operator<<(int* data);
     };
 }
