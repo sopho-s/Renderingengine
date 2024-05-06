@@ -17,26 +17,27 @@ jobs:
       # explicit include-based build matrix, of known valid options
       matrix:
         include:
-          # 22.04 supports CUDA 11.7+
-          - os:  ubuntu-latest
-            cuda: "12.0"
-            gcc: 11
+          # Windows-2022 & VS 2022 supports 11.6+
+          - os: windows-2022
+            cuda: "12.0.0"
+            visual_studio: "Visual Studio 17 2022"
     steps:
     - uses: actions/checkout@v4
 
     - name: Install CUDA
-      env:
+      env: 
         cuda: ${{ matrix.cuda }}
-      run: |
-        bash ./scripts/actions/install_cuda_ubuntu.sh
-      shell: bash
+        visual_studio: ${{ matrix.visual_studio }}
+      shell: powershell
+      run: .\scripts\actions\install_cuda_windows.ps1
 
-    - name: Install/Select gcc and g++ 
+    - name: nvcc check
+      shell: powershell
       run: |
-        sudo apt-get install -y gcc-${{ matrix.gcc }} g++-${{ matrix.gcc }}
-        echo "CC=/usr/bin/gcc-${{ matrix.gcc }}" >> $GITHUB_ENV
-        echo "CXX=/usr/bin/g++-${{ matrix.gcc }}" >> $GITHUB_ENV
-        echo "CUDAHOSTCXX=/usr/bin/g++-${{ matrix.gcc }}" >> $GITHUB_ENV
+        nvcc -V
+        ls $env:CUDA_PATH
+        ls $env:CUDA_PATH\bin
+        ls $env:CUDA_PATH\includ
 
     - name: Configure CMake
       run: cmake -B build -S .
