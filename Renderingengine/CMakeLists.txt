@@ -15,10 +15,7 @@ add_subdirectory(Includes)
 
 add_subdirectory(Maths)
 
-add_subdirectory(Camera)
-
 target_link_libraries(Renderingengine
 	PRIVATE
-	Camera
 	AMaths
 	GMaths)
