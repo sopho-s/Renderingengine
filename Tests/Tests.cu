@@ -103,45 +103,6 @@ void Rotation() {
 	Tester::ASSERT_NEAR_EQUAL<float>(out.y, 0, 0.001);
 	Tester::ASSERT_NEAR_EQUAL<float>(out.z, -1, 0.001);
 }
-void VecAddCPU() {
-	srand (time(NULL));
-	// initalises arrays
-	float vector1[131072];
-	float vector2[131072];
-	float out[131072];
-	// gives random numbers to arrays
-	for (int i = 0; i < 131072; i++) {
-		vector1[i] = rand() / RAND_MAX;
-		vector2[i] = rand() / RAND_MAX;
-	}
-	// calls function
-	AMaths::VecAdd(vector1, vector2, 131072, out);
-}
-
-void VecAddGPU() {
-	int N = 1<<17;
-	srand (time(NULL));
-	// creates uninitialised pointers
-	float *gpuvector1, *gpuvector2, *gpuout;
-	// gives memory to the pointers
-	cudaMallocManaged(&gpuvector1, sizeof(float) * 131072);
-	cudaMallocManaged(&gpuvector2, sizeof(float) * 131072);
-	cudaMallocManaged(&gpuout, sizeof(float) * 131072);
-	// assigns random numbers to both
-	for (int i = 0; i < N; i++) {
-		gpuvector1[i] = rand() / RAND_MAX;
-		gpuvector2[i] = rand() / RAND_MAX;
-	}
-	// calculates blocks and block sizes
-	int blockSize = 256;
-	int numBlocks = (N + blockSize - 1) / blockSize;
-	// calls function
-	GMaths::VecAdd <<< numBlocks, blockSize >>> (gpuvector1, gpuvector2, gpuout);
-	// frees memory 
-	cudaFree(gpuvector1);
-	cudaFree(gpuvector2);
-	cudaFree(gpuout);
-}
 
 int main() {
 	std::function<void()> test1 = [] { 
@@ -165,29 +126,75 @@ int main() {
 	std::function<void()> test7 = [] { 
 		Rotation();
 	};
-	std::function<void()> test8 = [] { 
-		VecAddGPU();
+	std::function<void()> test9 = [] { 
+		srand (time(NULL));
+		// initalises arrays
+		float* vector1 = new float[262144];
+		float* vector2 = new float[262144];
+		float* out = new float[262144];
+		// gives random numbers to arrays
+		for (int i = 0; i < 262144; i++) {
+			vector1[i] = rand() / RAND_MAX;
+			vector2[i] = rand() / RAND_MAX;
+		}
+		// calls function
+		for (int i = 0; i < 100000; i++) {
+			AMaths::VecAdd(vector1, vector2, 262144, out);
+		}
+		delete[] vector1;
+		delete[] vector2;
+		delete[] out;
 	};
-	std::function<void()> test9 = [] {
-		VecAddCPU();
+	std::function<void()> test8 = [] {
+		int N = 1<<18;
+		srand (time(NULL));
+		// creates uninitialised pointers
+		float *gpuvector1, *gpuvector2, *gpuout;
+		// gives memory to the pointers
+		cudaMalloc(&gpuvector1, sizeof(float) * 262144);
+		cudaMalloc(&gpuvector2, sizeof(float) * 262144);
+		cudaMalloc(&gpuout, sizeof(float) * 262144);
+		float *cpuvector1 = new float[262144];
+		float *cpuvector2 = new float[262144];
+		// assigns random numbers to both
+		for (int i = 0; i < N; i++) {
+			cpuvector1[i] = rand() / RAND_MAX;
+			cpuvector2[i] = rand() / RAND_MAX;
+		}
+		cudaMemcpy(gpuvector1, cpuvector1, sizeof(float) * 262144, cudaMemcpyHostToDevice);
+		cudaMemcpy(gpuvector2, cpuvector2, sizeof(float) * 262144, cudaMemcpyHostToDevice);
+		// calculates blocks and block sizes
+		int blockSize = 256;
+		int numBlocks = (N + blockSize - 1) / blockSize;
+		// calls function
+		for (int i = 0; i < 100000; i++) {
+			GMaths::VecAdd <<< numBlocks, blockSize >>> (gpuvector1, gpuvector2, gpuout);
+		}
+		// frees memory
+		cudaFree(gpuvector1);
+		cudaFree(gpuvector2);
+		cudaFree(gpuout);
+		delete[] cpuvector1;
+		delete[] cpuvector2;
 	};
 	Tester::Tester tester = Tester::Tester();
 	tester.AddGroup("Angles");
-	tester.AddTest(test1, "Euler To Quaternion");
-	tester.AddTest(test2, "Quaternion To Euler");
-	tester.AddTest(test3, "Quaternion To Euler To Quaternion");
-	tester.AddAverageTimeTest(test4, 1000, "Euler To Quaternion");
-	tester.AddAverageTimeTest(test5, 1000, "Quaternion To Euler");
-	tester.AddTest(test6, "Quaternion Multiplication");
-	tester.AddTest(test7, "Vector3 Rotation");
-	tester.AddAverageTimeTest(test7, 1000, "Vector3 Rotation");
+	tester.AddAverageTimeTest(test1, 1000000, "Euler To Quaternion");
+	tester.AddAverageTimeTest(test2, 1000000, "Quaternion To Euler");
+	tester.AddAverageTimeTest(test3, 1000000, "Quaternion To Euler To Quaternion");
+	tester.AddAverageTimeTest(test4, 1000000, "Euler To Quaternion");
+	tester.AddAverageTimeTest(test5, 1000000, "Quaternion To Euler");
+	tester.AddAverageTimeTest(test6, 1000000, "Quaternion Multiplication");
+	tester.AddAverageTimeTest(test7, 1000000, "Vector3 Rotation");
+	tester.AddAverageTimeTest(test7, 1000000, "Vector3 Rotation");
 	tester.AddGroup("GPU Functionality");
-	tester.AddTest(test8, "Vector Add");
-	tester.AddTest(test9, "Vector Add CPU");
+	tester.AddAverageTimeTest(test8, 1, "Vector Add");
+	//tester.AddTest(test9, "Vector Add CPU");
 	tester.RunTests();
 	Tester::PerformanceTester testerper = Tester::PerformanceTester();
 	testerper.AddGroup("GPU");
 	testerper.AddAverageTest(test9, 1, "Vector Add CPU");
+	testerper.AddAverageTest(test8, 1, "Vector Add GPU");
 	testerper.AddAverageTest(test8, 1, "Vector Add GPU");
 	testerper.RunTests();
 }

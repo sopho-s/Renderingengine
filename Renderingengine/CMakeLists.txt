@@ -13,7 +13,6 @@ add_executable (Renderingengine Renderingengine.cpp Renderingengine.h)
 
 add_subdirectory(Includes)
 
-
 add_subdirectory(Maths)
 
 add_subdirectory(Camera)

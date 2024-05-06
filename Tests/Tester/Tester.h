@@ -4,6 +4,9 @@
 #include <iostream>
 #include <functional>
 #include <chrono>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 namespace Tester {
     class Tester {
     private:

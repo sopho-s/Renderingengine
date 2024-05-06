@@ -88,18 +88,20 @@ namespace Tester {
     void Tester::RunTests() {
         int passedtests = 0;
         std::vector<bool> results;
-        std::vector<std::chrono::nanoseconds> times;
-        auto start = std::chrono::high_resolution_clock::now();
+        std::vector<float> times;
         int count = 0;
         std::chrono::steady_clock::time_point teststart;
         std::chrono::steady_clock::time_point testend;
+        clock_t START = clock();
         // runs each test
         for(std::function<void()> currenttest : tests) {
             bool pass = true;
+            clock_t TESTSTART;
+            float T_ELAPSED;
             // TODO: enum
             switch(TestType[count]) {
             case 0:
-                teststart = std::chrono::high_resolution_clock::now();
+                TESTSTART = clock();
                 try {
                     currenttest();
                     results.push_back(true);
@@ -107,10 +109,11 @@ namespace Tester {
                 } catch (int e) {
                     results.push_back(false);
                 }
-                testend = std::chrono::high_resolution_clock::now();
-                times.push_back(testend - teststart);
+                T_ELAPSED = (float)(clock() - TESTSTART);
+                times.push_back(T_ELAPSED);
                 break;
             case 1:
+                TESTSTART = clock();
                 teststart = std::chrono::high_resolution_clock::now();
                 try {
                     currenttest();
@@ -120,9 +123,11 @@ namespace Tester {
                 testend = std::chrono::high_resolution_clock::now();
                 results.push_back(pass);
                 passedtests++;
-                times.push_back(testend - teststart);
+                T_ELAPSED = (float)(clock() - TESTSTART);
+                times.push_back(T_ELAPSED);
                 break;
             case 2:
+                TESTSTART = clock();
                 teststart = std::chrono::high_resolution_clock::now();
                 try {
                     for (int i = 0; i < RepeatAmount[count]; i++) {
@@ -134,12 +139,13 @@ namespace Tester {
                 testend = std::chrono::high_resolution_clock::now();
                 results.push_back(pass);
                 passedtests++;
-                times.push_back((testend - teststart) / RepeatAmount[count]);
+                T_ELAPSED = ((float)(clock() - TESTSTART) / RepeatAmount[count]);
+                times.push_back(T_ELAPSED);
                 break;
             }
             count++;
         }
-        auto end = std::chrono::high_resolution_clock::now();
+        float finalcount = (float)(clock() - START);
         int testnum = 1;
         int currentgroup = 0;
         for(bool result : results) {
@@ -187,31 +193,34 @@ namespace Tester {
                 break;
             }
             // prints the duration of the test in an appropriate format
-            auto dur = std::chrono::duration_cast<std::chrono::nanoseconds>(times[testnum-1]);
-            long long timecount = dur.count();
-            if (timecount < 1000) {
-                std::cout << " TEST TOOK: " << timecount << " NANOSECONDS\033[0m" << std::endl;
+            float timecount = times[testnum-1];
+            if (timecount < 0.001) {
+                timecount = (float)(timecount * 1000000);
+                std::cout << " TEST TOOK: " << timecount << " MICROCYCLES\033[0m" << std::endl;
+            } else if (timecount < 1) {
+                timecount = (float)(timecount * 1000);
+                std::cout << " TEST TOOK: " << timecount << " MILLICYCLES\033[0m" << std::endl;
+            } else if (timecount < 1000) {
+                std::cout << " TEST TOOK: " << timecount << " CYCLES\033[0m" << std::endl;
             } else if (timecount < 1000000) {
-                timecount = (long long)(timecount / 1000);
-                std::cout << " TEST TOOK: " << timecount << " MICROSECONDS\033[0m" << std::endl;
+                timecount = (float)(timecount / 1000);
+                std::cout << " TEST TOOK: " << timecount << " KILOCYCLES\033[0m" << std::endl;
             } else {
-                timecount = (long long)(timecount / 1000000);
-                std::cout << " TEST TOOK: " << timecount << " MILLISECONDS\033[0m" << std::endl;
+                timecount = (float)(timecount / 1000000);
+                std::cout << " TEST TOOK: " << timecount << " MEGACYCLES\033[0m" << std::endl;
             }
             testnum++;
         }
         // prints the final duration of the tests in an appropriate format
         std::cout << "\n\nTESTS PASSED: " << passedtests << "\\" << testnum-1 << std::endl;
-        auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-        long long finalcount = duration.count();
         if (finalcount < 1000) {
-            std::cout << "TESTS LASTED: " << finalcount << " NANOSECONDS\033[0m" << std::endl;
+            std::cout << "TESTS LASTED: " << finalcount << " CYCLES\033[0m" << std::endl;
         } else if (finalcount < 1000000) {
-            finalcount = (long long)(finalcount / 1000);
-            std::cout << "TESTS LASTED: " << finalcount << " MICROSECONDS\033[0m" << std::endl;
+            finalcount = (double)(finalcount / 1000);
+            std::cout << "TESTS LASTED: " << finalcount << " KILOCYCLES\033[0m" << std::endl;
         } else {
-            finalcount = (long long)(finalcount / 1000000);
-            std::cout << "TESTS LASTED: " << finalcount << " MILLISECONDS\033[0m" << std::endl;
+            finalcount = (double)(finalcount / 1000000);
+            std::cout << "TESTS LASTED: " << finalcount << " MEGACYCLES\033[0m" << std::endl;
         }
     }
     void PerformanceTester::RunTests() {
@@ -231,12 +240,9 @@ namespace Tester {
                 times.push_back(testend - teststart);
                 break;
             case 2:
-                std::cout << "tesst1" << std::endl;
                 teststart = std::chrono::high_resolution_clock::now();
                 for (int i = 0; i < RepeatAmount[count]; i++) {
-                    std::cout << "tesst2" << std::endl;
                     currenttest();
-                    std::cout << "tesst3" << std::endl;
                 }
                 testend = std::chrono::high_resolution_clock::now();
                 times.push_back((testend - teststart) / RepeatAmount[count]);
