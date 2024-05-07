@@ -1,0 +1,2 @@
+add_library(VertexShader VertexShader.cuh VertexShader.cu)
+target_compile_features(VertexShader PUBLIC cxx_std_11)

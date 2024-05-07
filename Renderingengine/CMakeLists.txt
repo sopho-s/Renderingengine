@@ -13,7 +13,10 @@ add_executable (Renderingengine Renderingengine.cpp Renderingengine.h)
 
 add_subdirectory(Maths)
 
+add_subdirectory(PipeLine)
+
 target_link_libraries(Renderingengine
 	PRIVATE
 	AMaths
-	GMaths)
+	GMaths
+	VertexShader)

@@ -4,7 +4,7 @@ namespace GPUInterface {
         startpointer = 0;
         endpointer = 0;
     }
-    Caller::Caller operator<<(int* data) {
+    Caller::Caller operator<<(DrawCall* data) {
         int count = 0;
         while (data[count] != -1) {
             if (endpointer > 500) {
