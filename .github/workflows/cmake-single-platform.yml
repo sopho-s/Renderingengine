@@ -24,12 +24,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install CUDA
+    -name: Cache CUDA
       id: cache-cuda
       uses: actions/cache@v3
       with:
         path: |
           C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0
+
+    - if: ${{ steps.cache-cuda.outputs.cache-hit != 'true' }}
+      name: Install CUDA
       env: 
         cuda: ${{ matrix.cuda }}
         visual_studio: ${{ matrix.visual_studio }}
