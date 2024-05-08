@@ -24,7 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-      name: Install CUDA
+    - name: Install CUDA
       env: 
         cuda: ${{ matrix.cuda }}
         visual_studio: ${{ matrix.visual_studio }}
