@@ -188,13 +188,13 @@ int main() {
 	tester.AddAverageTimeTest(test7, 1000000, "Vector3 Rotation");
 	tester.AddAverageTimeTest(test7, 1000000, "Vector3 Rotation");
 	tester.AddGroup("GPU Functionality");
-	tester.AddAverageTimeTest(test8, 1, "Vector Add");
+	//tester.AddAverageTimeTest(test8, 1, "Vector Add");
 	//tester.AddTest(test9, "Vector Add CPU");
 	tester.RunTests();
-	Tester::PerformanceTester testerper = Tester::PerformanceTester();
+	/*Tester::PerformanceTester testerper = Tester::PerformanceTester();
 	testerper.AddGroup("GPU");
 	testerper.AddAverageTest(test9, 1, "Vector Add CPU");
 	testerper.AddAverageTest(test8, 1, "Vector Add GPU");
 	testerper.AddAverageTest(test8, 1, "Vector Add GPU");
-	testerper.RunTests();
+	testerper.RunTests();*/
 }

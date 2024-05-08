@@ -1,0 +1,2 @@
+add_library(InputAssembler InputAssembler.cuh InputAssembler.cu)
+target_compile_features(InputAssembler PUBLIC cxx_std_11)
