@@ -6,11 +6,11 @@ project (Engine LANGUAGES CUDA CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CUDA_STANDARD 17)
-#set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -rdc=true -lcudadevrt -lcublas_device")
+set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -rdc=true -lcudadevrt -lcublas_device -dc")
 
 include_directories(Maths Camera GPUInterface Errors Pipeline/InputAssembler)
 
-add_executable(Renderingengine Renderingengine.cu Renderingengine.cuh)
+add_library(Renderingengine Renderingengine.cu Renderingengine.cuh)
 
 add_subdirectory(Maths)
 
@@ -28,3 +28,9 @@ target_link_libraries(Renderingengine
 	VertexShader
 	Calls
 	Errors)
+
+add_executable(Main MAIN.cu)
+
+target_link_libraries(Main
+	PRIVATE
+	Renderingengine)

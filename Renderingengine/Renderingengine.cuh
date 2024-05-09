@@ -8,4 +8,6 @@
 #include <stdexcept>
 #include <iostream>
 
+int run();
+
 #endif

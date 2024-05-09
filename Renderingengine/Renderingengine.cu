@@ -29,7 +29,7 @@ __global__ void InputAssemblerCheck(int* drawcall, bool* out) {
 	}
 }
 
-int main()
+int run()
 {
 	std::cout << "PERFORMING DRAW CALL CHECK" << std::endl;
 	GPUInterface::DrawCall DrawCalltest(GPUInterface::DrawType::Triangle, 3, -1, new int[3] {1, 2, 3});
