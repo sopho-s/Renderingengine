@@ -4,5 +4,7 @@ include_directories(../Includes)
 cmake_path(GET CMAKE_CURRENT_SOURCE_DIR PARENT_PATH PARENT_DIR)
 target_compile_features(AMaths PUBLIC cxx_std_11)
 target_compile_features(GMaths PUBLIC cxx_std_11)
+set_property(TARGET GMaths PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+set_property(TARGET AMaths PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 #set_target_properties(AMaths PROPERTIES
 #                            CUDA_SEPARABLE_COMPILATION ON)

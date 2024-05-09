@@ -1,2 +1,3 @@
 add_library(InputAssembler InputAssembler.cuh InputAssembler.cu)
 target_compile_features(InputAssembler PUBLIC cxx_std_11)
+set_property(TARGET InputAssembler PROPERTY CUDA_SEPARABLE_COMPILATION ON)
