@@ -1,1 +1,2 @@
+add_subdirectory(InputAssembler)
 add_subdirectory(VertexShader)
