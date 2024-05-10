@@ -1,2 +1,3 @@
 add_library(VertexShader VertexShader.cuh VertexShader.cu)
-target_compile_features(VertexShader PUBLIC cxx_std_11)
+target_compile_features(VertexShader PUBLIC cuda_std_11)
+set_property(TARGET VertexShader PROPERTY CUDA_SEPARABLE_COMPILATION ON)

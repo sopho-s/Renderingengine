@@ -12,5 +12,3 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")
 add_subdirectory ("Renderingengine")
 
 add_subdirectory(Tests)
-
-#add_custom_target(check COMMAND Testing --verbose)
