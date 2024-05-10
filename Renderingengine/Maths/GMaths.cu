@@ -1,4 +1,9 @@
+#include "GMaths.cuh"
 namespace GMaths {
+    __device__ void Add(float val1, float val2, float &out) {
+        out = val1 + val2;
+    }
+
     __global__ void VecAdd(float* vec1, float* vec2, float* out) {
         int i = threadIdx.x + blockDim.x * blockIdx.x;
         out[i] = vec1[i] + vec2[i];
